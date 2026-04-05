@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ListingPro – E-commerce Product Listing Service</title>
+  <meta name="description" content="Professional product listing service for Amazon, Flipkart, Meesho, Myntra and more." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #f9f9f7;
+      color: #1a1a1a;
+      font-size: 15px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes badgePop {
+      0%   { opacity: 0; transform: scale(0.8); }
+      70%  { transform: scale(1.06); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(-6px); }
+    }
+    @keyframes pulse-ring {
+      0%   { transform: scale(1); opacity: 0.6; }
+      100% { transform: scale(1.6); opacity: 0; }
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(249,249,247,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #e5e5e0;
+      padding: 0 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 62px;
+      animation: slideDown 0.5s ease both;
+      gap: 1rem;
+    }
+    .nav-brand {
+      font-family: 'Sora', sans-serif;
+      font-size: 1.15rem; font-weight: 700;
+      color: #185FA5; text-decoration: none;
+      display: flex; align-items: center; gap: 9px;
+      flex-shrink: 0;
+    }
+    .nav-dot {
+      width: 9px; height: 9px; border-radius: 50%;
+      background: #25D366; position: relative; flex-shrink: 0;
+    }
+    .nav-dot::after {
+      content: '';
+      position: absolute; inset: -3px;
+      border-radius: 50%; border: 2px solid #25D366;
+      animation: pulse-ring 1.6s ease-out infinite;
+    }
+    .nav-links {
+      display: flex; align-items: center; gap: 0.2rem;
+      list-style: none; flex: 1; justify-content: center;
+    }
+    .nav-links a {
+      text-decoration: none; color: #444;
+      font-size: 13.5px; font-weight: 500;
+      padding: 6px 13px; border-radius: 7px;
+      transition: background 0.18s, color 0.18s;
+    }
+    .nav-links a:hover { background: #E6F1FB; color: #185FA5; }
+    .nav-cta {
+      background: #185FA5; color: #fff;
+      padding: 8px 18px; border-radius: 8px;
+      font-size: 13px; font-weight: 500;
+      text-decoration: none; white-space: nowrap; flex-shrink: 0;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .nav-cta:hover { background: #144d87; transform: translateY(-1px); }
+
+    /* Hamburger for mobile */
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; padding: 4px; background: none; border: none;
+    }
+    .hamburger span {
+      display: block; width: 22px; height: 2px;
+      background: #333; border-radius: 2px;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    .mobile-menu {
+      display: none; flex-direction: column;
+      background: #fff; border-bottom: 1px solid #e5e5e0;
+      padding: 0.8rem 1.5rem 1rem;
+      animation: fadeIn 0.2s ease;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      text-decoration: none; color: #333; font-size: 14px;
+      font-weight: 500; padding: 10px 0;
+      border-bottom: 1px solid #f0f0ee;
+    }
+    .mobile-menu a:last-child { border-bottom: none; }
+
+    @media (max-width: 680px) {
+      .nav-links { display: none; }
+      .nav-cta { display: none; }
+      .hamburger { display: flex; }
+    }
+
+    /* ── HERO ── */
+    .hero {
+      max-width: 680px; margin: 0 auto;
+      padding: 5.5rem 2rem 4rem;
+      text-align: center;
+    }
+    .badge {
+      display: inline-block;
+      background: #E6F1FB; color: #185FA5;
+      font-size: 12px; font-weight: 500;
+      padding: 5px 16px; border-radius: 999px;
+      margin-bottom: 1.5rem; letter-spacing: 0.04em;
+      animation: badgePop 0.6s ease both 0.2s;
+    }
+    h1 {
+      font-family: 'Sora', sans-serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700; line-height: 1.22;
+      margin-bottom: 1.1rem; color: #111;
+      animation: fadeUp 0.7s ease both 0.35s;
+    }
+    h1 span { color: #185FA5; }
+    .hero-sub {
+      font-size: 16px; color: #555;
+      max-width: 480px; margin: 0 auto 2.2rem;
+      line-height: 1.75;
+      animation: fadeUp 0.7s ease both 0.5s;
+    }
+    .hero-btns {
+      display: flex; gap: 10px;
+      justify-content: center; flex-wrap: wrap;
+      animation: fadeUp 0.7s ease both 0.65s;
+    }
+    .btn-primary {
+      background: #185FA5; color: #fff;
+      padding: 12px 28px; border-radius: 9px;
+      font-size: 14px; font-weight: 500;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 14px rgba(24,95,165,0.25);
+    }
+    .btn-primary:hover { background: #144d87; transform: translateY(-2px); box-shadow: 0 7px 22px rgba(24,95,165,0.32); }
+    .btn-outline {
+      background: transparent; color: #185FA5;
+      padding: 12px 28px; border-radius: 9px;
+      font-size: 14px; font-weight: 500;
+      text-decoration: none;
+      border: 1.5px solid #185FA5;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-outline:hover { background: #E6F1FB; transform: translateY(-2px); }
+
+    /* ── PLATFORMS ── */
+    .platforms {
+      background: #fff;
+      border-top: 1px solid #e5e5e0;
+      border-bottom: 1px solid #e5e5e0;
+      padding: 1.3rem 2rem;
+      display: flex; flex-wrap: wrap;
+      justify-content: center; gap: 8px;
+      animation: fadeIn 0.8s ease both 0.8s;
+    }
+    .pill {
+      background: #f1f0eb; border-radius: 999px;
+      padding: 5px 14px; font-size: 13px; color: #555;
+      transition: background 0.2s, color 0.2s, transform 0.2s;
+      cursor: default;
+    }
+    .pill:hover { background: #E6F1FB; color: #185FA5; transform: translateY(-2px); }
+
+    /* ── SECTIONS ── */
+    .section { padding: 3.5rem 2rem; }
+    .section.alt { background: #fff; border-top: 1px solid #e5e5e0; border-bottom: 1px solid #e5e5e0; }
+    .inner { max-width: 700px; margin: 0 auto; }
+    .sec-label {
+      font-size: 11px; font-weight: 500;
+      letter-spacing: 0.12em; color: #185FA5;
+      text-transform: uppercase; margin-bottom: 0.4rem;
+    }
+    .sec-title {
+      font-family: 'Sora', sans-serif;
+      font-size: 1.5rem; font-weight: 600;
+      color: #111; margin-bottom: 2rem;
+    }
+
+    /* ── SERVICES ── */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(195px, 1fr));
+      gap: 12px;
+    }
+    .scard {
+      background: #f9f9f7;
+      border: 1px solid #e5e5e0;
+      border-radius: 14px; padding: 1.3rem;
+      opacity: 0; transform: translateY(20px);
+      transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s, opacity 0.45s;
+    }
+    .scard.visible { opacity: 1; transform: translateY(0); }
+    .scard:hover { transform: translateY(-5px); box-shadow: 0 10px 28px rgba(0,0,0,0.08); border-color: #b5d4f4; }
+    .scard-icon { font-size: 22px; margin-bottom: 10px; display: inline-block; animation: float 3s ease-in-out infinite; }
+    .scard:nth-child(2) .scard-icon { animation-delay: 0.4s; }
+    .scard:nth-child(3) .scard-icon { animation-delay: 0.8s; }
+    .scard:nth-child(4) .scard-icon { animation-delay: 1.2s; }
+    .scard:nth-child(5) .scard-icon { animation-delay: 1.6s; }
+    .scard:nth-child(6) .scard-icon { animation-delay: 2s; }
+    .scard h3 { font-size: 14px; font-weight: 500; color: #111; margin-bottom: 4px; }
+    .scard p { font-size: 13px; color: #666; line-height: 1.55; }
+
+    /* ── ABOUT ── */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center; }
+    .about-text p { font-size: 14px; color: #555; line-height: 1.75; margin-bottom: 1rem; }
+    .about-text p:last-child { margin-bottom: 0; }
+    .about-highlights { display: flex; flex-direction: column; gap: 12px; }
+    .highlight {
+      display: flex; align-items: flex-start; gap: 12px;
+      background: #f1f0eb; border-radius: 10px; padding: 1rem;
+      opacity: 0; transform: translateX(20px);
+      transition: opacity 0.5s, transform 0.5s;
+    }
+    .highlight.visible { opacity: 1; transform: translateX(0); }
+    .highlight-icon { font-size: 20px; flex-shrink: 0; }
+    .highlight h4 { font-size: 13px; font-weight: 500; color: #111; margin-bottom: 2px; }
+    .highlight p { font-size: 12px; color: #666; margin: 0; line-height: 1.5; }
+    @media (max-width: 560px) {
+      .about-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── PROCESS ── */
+    .steps { display: flex; flex-direction: column; position: relative; }
+    .steps::before {
+      content: ''; position: absolute; left: 19px; top: 0; bottom: 0;
+      width: 2px; background: #e5e5e0;
+    }
+    .step {
+      display: flex; gap: 1.2rem; padding: 1.1rem 0;
+      opacity: 0; transform: translateY(16px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .step.visible { opacity: 1; transform: translateY(0); }
+    .step-num {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: #185FA5; color: #fff;
+      font-family: 'Sora', sans-serif; font-size: 14px; font-weight: 600;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; z-index: 1;
+      box-shadow: 0 0 0 5px #f9f9f7;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .step:hover .step-num { transform: scale(1.12); box-shadow: 0 0 0 5px #f9f9f7, 0 4px 12px rgba(24,95,165,0.3); }
+    .step-body { padding-top: 9px; }
+    .step-body h4 { font-size: 14px; font-weight: 500; color: #111; margin-bottom: 3px; }
+    .step-body p { font-size: 13px; color: #666; line-height: 1.55; }
+
+    /* ── WHY US ── */
+    .why-list { display: flex; flex-direction: column; }
+    .why-item {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 1.1rem 0; border-bottom: 1px solid #eee;
+      opacity: 0; transform: translateX(-22px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .why-item.visible { opacity: 1; transform: translateX(0); }
+    .why-item:last-child { border-bottom: none; }
+    .why-dot { width: 9px; height: 9px; border-radius: 50%; background: #185FA5; margin-top: 7px; flex-shrink: 0; transition: transform 0.3s; }
+    .why-item:hover .why-dot { transform: scale(1.6); }
+    .why-item p { font-size: 14px; color: #555; line-height: 1.65; }
+    .why-item strong { color: #111; font-weight: 500; }
+
+    /* ── CONTACT ── */
+    .contact-cards { display: flex; gap: 14px; flex-wrap: wrap; }
+    .ccard {
+      flex: 1; min-width: 220px;
+      background: #fff; border: 1px solid #e5e5e0;
+      border-radius: 14px; padding: 1.5rem;
+      opacity: 0; transform: translateY(20px);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .ccard.visible { opacity: 1; transform: translateY(0); }
+    .ccard:hover { transform: translateY(-5px); box-shadow: 0 10px 28px rgba(0,0,0,0.08); }
+    .ccard-top { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .ccard-icon { width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+    .ccard h4 { font-size: 15px; font-weight: 500; color: #111; }
+    .ccard p { font-size: 13px; color: #666; margin-bottom: 1.1rem; line-height: 1.55; }
+    .ccard a { display: block; font-size: 13px; font-weight: 500; text-decoration: none; padding: 10px 14px; border-radius: 9px; text-align: center; transition: opacity 0.2s, transform 0.15s; }
+    .ccard a:hover { opacity: 0.87; transform: translateY(-1px); }
+    .wa-btn { background: #25D366; color: #fff; }
+    .email-btn { background: #f1f0eb; color: #111; }
+
+    /* ── FOOTER ── */
+    footer { padding: 1.6rem 2rem; text-align: center; border-top: 1px solid #e5e5e0; }
+    footer p { font-size: 12px; color: #aaa; }
+
+    @media (max-width: 500px) {
+      .hero { padding: 3rem 1.2rem 2rem; }
+      .section { padding: 2.5rem 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-brand" href="#"><span class="nav-dot"></span>ListingPro</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#how-it-works">How It Works</a></li>
+      <li><a href="#why-us">Why Us</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a class="nav-cta" href="https://wa.me/917909092283" target="_blank">💬 WhatsApp Us</a>
+    <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#about" onclick="toggleMenu()">About</a>
+    <a href="#services" onclick="toggleMenu()">Services</a>
+    <a href="#how-it-works" onclick="toggleMenu()">How It Works</a>
+    <a href="#why-us" onclick="toggleMenu()">Why Us</a>
+    <a href="#contact" onclick="toggleMenu()">Contact</a>
+    <a href="https://wa.me/917909092283" target="_blank" style="color:#25D366;">💬 WhatsApp Us</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="badge">E-commerce Listing Service</div>
+    <h1>Your Products, <span>Listed Right</span><br>on Every Platform.</h1>
+    <p class="hero-sub">We help sellers and brands get their products live on Amazon, Flipkart, Meesho & more — with optimized titles, descriptions, and images that actually sell.</p>
+    <div class="hero-btns">
+      <a class="btn-primary" href="https://wa.me/917909092283" target="_blank">💬 WhatsApp Us</a>
+      <a class="btn-outline" href="mailto:listingpro58@gmail.com">✉️ Email Us</a>
+    </div>
+  </section>
+
+  <!-- PLATFORMS -->
+  <div class="platforms">
+    <span class="pill">Amazon</span>
+    <span class="pill">Flipkart</span>
+    <span class="pill">Meesho</span>
+    <span class="pill">Myntra</span>
+    <span class="pill">Nykaa</span>
+    <span class="pill">Snapdeal</span>
+    <span class="pill">JioMart</span>
+    <span class="pill">& more</span>
+  </div>
+
+  <!-- ABOUT -->
+  <section class="section alt" id="about">
+    <div class="inner">
+      <div class="sec-label">About</div>
+      <div class="sec-title">Who we are</div>
+      <div class="about-grid">
+        <div class="about-text">
+          <p>We are a dedicated e-commerce listing team helping Indian sellers and brands establish a strong presence across all major online marketplaces.</p>
+          <p>From a single product to an entire catalog, we take care of everything — writing, formatting, uploading — so you can focus on growing your business.</p>
+          <p>We work directly with sellers, manufacturers, wholesalers, and resellers of all sizes. No job is too small or too large for us.</p>
+        </div>
+        <div class="about-highlights">
+          <div class="highlight">
+            <div class="highlight-icon">🎯</div>
+            <div><h4>Results-focused</h4><p>Every listing is crafted to rank higher and convert better</p></div>
+          </div>
+          <div class="highlight">
+            <div class="highlight-icon">⚡</div>
+            <div><h4>Fast delivery</h4><p>Most orders completed within 24–72 hours</p></div>
+          </div>
+          <div class="highlight">
+            <div class="highlight-icon">🤝</div>
+            <div><h4>Direct communication</h4><p>You talk to us directly — no middlemen, no delays</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="section" id="services">
+    <div class="inner">
+      <div class="sec-label">Services</div>
+      <div class="sec-title">What we handle for you</div>
+      <div class="services-grid">
+        <div class="scard"><div class="scard-icon">📦</div><h3>Product Listing</h3><p>Titles, bullets & descriptions written to rank and convert</p></div>
+        <div class="scard"><div class="scard-icon">🖼️</div><h3>Image Formatting</h3><p>White background, infographics & A+ content ready</p></div>
+        <div class="scard"><div class="scard-icon">🔑</div><h3>Keyword Research</h3><p>Platform-specific keywords for better discoverability</p></div>
+        <div class="scard"><div class="scard-icon">🔄</div><h3>Bulk Uploads</h3><p>Catalog management & bulk listing via flat files</p></div>
+        <div class="scard"><div class="scard-icon">🌐</div><h3>Multi-Platform</h3><p>Same catalog listed across multiple marketplaces</p></div>
+        <div class="scard"><div class="scard-icon">📊</div><h3>Listing Audit</h3><p>Review & fix existing listings for better performance</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="section alt" id="how-it-works">
+    <div class="inner">
+      <div class="sec-label">Process</div>
+      <div class="sec-title">How it works</div>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body"><h4>Share your products</h4><p>Send us your product details, images, category and target platform via WhatsApp or email.</p></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><h4>We research & write</h4><p>We do keyword research and craft SEO-optimized titles, descriptions and bullet points.</p></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><h4>Review & approve</h4><p>You review the listing content. We revise until you're fully satisfied.</p></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-body"><h4>Go live</h4><p>We upload your listings directly or hand over ready-to-upload files — your choice.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY US -->
+  <section class="section" id="why-us">
+    <div class="inner">
+      <div class="sec-label">Why us</div>
+      <div class="sec-title">Why sellers work with us</div>
+      <div class="why-list">
+        <div class="why-item"><div class="why-dot"></div><p><strong>Fast turnaround</strong> — Most listings delivered within 24–72 hours so you can go live quickly.</p></div>
+        <div class="why-item"><div class="why-dot"></div><p><strong>Marketplace expertise</strong> — We know the guidelines, policies and algorithms of every major Indian platform.</p></div>
+        <div class="why-item"><div class="why-dot"></div><p><strong>SEO-first approach</strong> — Every listing is written to rank high in search results, not just look good.</p></div>
+        <div class="why-item"><div class="why-dot"></div><p><strong>Affordable rates</strong> — Quality work at fair, flexible pricing with no hidden charges.</p></div>
+        <div class="why-item"><div class="why-dot"></div><p><strong>Any catalog size</strong> — Whether you have 5 products or 500, every listing gets the same attention.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section alt" id="contact">
+    <div class="inner">
+      <div class="sec-label">Contact</div>
+      <div class="sec-title">Let's get started</div>
+      <div class="contact-cards">
+        <div class="ccard">
+          <div class="ccard-top"><div class="ccard-icon" style="background:#E8F9EF;">💬</div><h4>WhatsApp</h4></div>
+          <p>Message us directly for a quick quote or to share your catalog. We reply fast.</p>
+          <a class="wa-btn" href="https://wa.me/917909092283" target="_blank">Contact Us</a>
+        </div>
+        <div class="ccard">
+          <div class="ccard-top"><div class="ccard-icon" style="background:#E6F1FB;">✉️</div><h4>Email</h4></div>
+          <p>Send us your product details, category and platform. We reply within a few hours.</p>
+          <a class="email-btn" href="mailto:listingpro58@gmail.com">E-Mail Us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>ListingPro · +91 79090 92283 · listingpro58@gmail.com · Amazon · Flipkart · Meesho · and more</p>
+  </footer>
+
+  <script>
+    function toggleMenu() {
+      document.getElementById('mobileMenu').classList.toggle('open');
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const delay = parseInt(el.dataset.delay || 0);
+          setTimeout(() => el.classList.add('visible'), delay);
+          observer.unobserve(el);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.scard').forEach((el, i) => { el.dataset.delay = i * 80; observer.observe(el); });
+    document.querySelectorAll('.why-item').forEach((el, i) => { el.dataset.delay = i * 100; observer.observe(el); });
+    document.querySelectorAll('.step').forEach((el, i) => { el.dataset.delay = i * 130; observer.observe(el); });
+    document.querySelectorAll('.ccard').forEach((el, i) => { el.dataset.delay = i * 130; observer.observe(el); });
+    document.querySelectorAll('.highlight').forEach((el, i) => { el.dataset.delay = i * 120; observer.observe(el); });
+  </script>
+</body>
+</html>
